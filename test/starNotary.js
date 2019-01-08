@@ -85,4 +85,10 @@ contract('StarNotary', async (accs) => {
   });
 
   // 3) Stars Tokens can be transferred from one address to another.
-  
+  it('lets a user transfer his star to another', async() => {
+    let token1 = 103;
+    let receiver = accounts[1];
+    await instance.createStar('star 1', token1, {from:accounts[0]})
+    await instance.transferStar(receiver, token1, {from:accounts[0]});
+    assert.equal(await instance.ownerOf.call(token1), receiver);
+  });
