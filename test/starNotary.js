@@ -62,6 +62,9 @@ contract('StarNotary', async (accs) => {
     const balanceAfterUser2BuysStar = web3.eth.getBalance(user2)
     assert.equal(balanceOfUser2BeforeTransaction.sub(balanceAfterUser2BuysStar), starPrice);
   });
+  // Write Tests for:
+
+  // 1) The token name and token symbol are added properly.
 
   it('lets user find star using tokenId', async() => {
     let tokenId = 100;
@@ -70,8 +73,16 @@ contract('StarNotary', async (accs) => {
     assert.equal(starName, 'star 1');
   });
 
-  // Write Tests for:
+  // 2) 2 users can exchange their stars.
+  it('lets two users exchange stars', async() => {
+    let token1 = 101;
+    let token2 = 102;
+    await instance.createStar('star 1', token1, {from:accounts[0]})
+    await instance.createStar('star 2', token2, {from:accounts[1]})
+    await instance.exchangeStars(token1, token2);
+    assert.equal(await instance.ownerOf.call(token1), accounts[1]);
+    assert.equal(await instance.ownerOf.call(token2), accounts[0]);
+  });
 
-// 1) The token name and token symbol are added properly.
-// 2) 2 users can exchange their stars.
-// 3) Stars Tokens can be transferred from one address to another.
+  // 3) Stars Tokens can be transferred from one address to another.
+  

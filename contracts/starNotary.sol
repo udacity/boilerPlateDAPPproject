@@ -8,11 +8,11 @@ contract StarNotary is ERC721 {
         string name;
     }
 
-/**
- * Add a name and a symbol for your starNotary tokens
- */
-  string public tokenName;
-  string public tokenSymbol;
+    /**
+     * Add a name and a symbol for your starNotary tokens
+     */
+    string public tokenName = "myERC721Token";
+    string public tokenSymbol = "myERC721TokenSymbol";
 
     mapping(uint256 => Star) public tokenIdToStarInfo;
     mapping(uint256 => uint256) public starsForSale;
@@ -25,9 +25,9 @@ contract StarNotary is ERC721 {
         _mint(msg.sender, _tokenId);
     }
 
-/**
- * Add a function lookupTokenIdToStarInfo, that looks up the stars using the Token ID, and then returns the name of the star.
- */
+    /**
+     * Add a function lookupTokenIdToStarInfo, that looks up the stars using the Token ID, and then returns the name of the star.
+     */
     function lookupTokenIdToStarInfo(uint256 _tokenId) public view returns (string starName){
         starName = tokenIdToStarInfo[_tokenId].name;
     }
@@ -56,12 +56,26 @@ contract StarNotary is ERC721 {
         starsForSale[_tokenId] = 0;
       }
 
-/** Add a function called exchangeStars, so 2 users can exchange their star tokens... */
-/** Do not worry about the price, just write code to exchange stars between users. */
+    /** Add a function called exchangeStars, so 2 users can exchange their star tokens.
+     * Do not worry about the price, just write code to exchange stars between users.
+     */
+    function exchangeStars(uint256 token1, uint256 token2) public {
+        require(token1 != token2);
 
-/**
- * Write a function to Transfer a Star. The function should transfer a star from the address of the caller.
- * The function should accept 2 arguments, the address to transfer the star to, and the token ID of the star.
- */
+        address starOwner1 = ownerOf(token1);
+        address starOwner2 = ownerOf(token2);
+
+        require(starOwner1 != starOwner2);
+        _removeTokenFrom(starOwner1, token1);
+        _addTokenTo(starOwner2, token1);
+        _removeTokenFrom(starOwner2, token2);
+        _addTokenTo(starOwner1, token2);
+
+    }
+
+    /**
+     * Write a function to Transfer a Star. The function should transfer a star from the address of the caller.
+     * The function should accept 2 arguments, the address to transfer the star to, and the token ID of the star.
+     */
 
 }
