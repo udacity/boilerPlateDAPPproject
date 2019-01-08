@@ -63,6 +63,13 @@ contract('StarNotary', async (accs) => {
     assert.equal(balanceOfUser2BeforeTransaction.sub(balanceAfterUser2BuysStar), starPrice);
   });
 
+  it('lets user find star using tokenId', async() => {
+    let tokenId = 100;
+    await instance.createStar('star 1', tokenId, {from:accounts[0]})
+    let starName = await instance.lookupTokenIdToStarInfo(tokenId, {from:accounts[0]});
+    assert.equal(starName, 'star 1');
+  });
+
   // Write Tests for:
 
 // 1) The token name and token symbol are added properly.
